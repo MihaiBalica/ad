@@ -184,7 +184,7 @@ if __name__ == '__main__':
     model.eval()
 
     # create_sintel_submission(model.module, warm_start=True)
-    create_kitti_submission(model.module)
+    # create_kitti_submission(model.module)
 
     with torch.no_grad():
         if args.dataset == 'chairs':
