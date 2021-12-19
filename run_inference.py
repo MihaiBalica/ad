@@ -60,6 +60,7 @@ def validate_kitti(model, iters=6):
         flow_pr = model(image1, image2, iters=iters, test_mode=True)
         flow = padder.unpad(flow_pr[0]).cpu()
         output_filename = os.path.join(output_path, str(val_id))
+        print(output_filename)
         frame_utils.writeFlowKITTI(output_filename, flow)
 
         # epe = torch.sum((flow - flow_gt)**2, dim=0).sqrt()
