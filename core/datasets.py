@@ -61,7 +61,7 @@ class FlowDataset(data.Dataset):
         img1 = frame_utils.read_gen(self.image_list[index][0])
         img2 = frame_utils.read_gen(self.image_list[index][1])
 
-        flow = np.array(flow).astype(np.float32)
+        # flow = np.array(flow).astype(np.float32)
         img1 = np.array(img1).astype(np.uint8)
         img2 = np.array(img2).astype(np.uint8)
 
@@ -97,70 +97,11 @@ class FlowDataset(data.Dataset):
         
     def __len__(self):
         return len(self.image_list)
-
-
-class MpiSintel(FlowDataset):
-    def __init__(self, aug_params=None, split='training', root='datasets/Sintel', dstype='clean'):
-        super(MpiSintel, self).__init__(aug_params)
-        flow_root = osp.join(root, split, 'flow')
-        image_root = osp.join(root, split, dstype)
-
-        if split == 'test':
-            self.is_test = True
-
-        for scene in os.listdir(image_root):
-            image_list = sorted(glob(osp.join(image_root, scene, '*.png')))
-            for i in range(len(image_list)-1):
-                self.image_list += [ [image_list[i], image_list[i+1]] ]
-                self.extra_info += [ (scene, i) ] # scene and frame_id
-
-            if split != 'test':
-                self.flow_list += sorted(glob(osp.join(flow_root, scene, '*.flo')))
-
-
-class FlyingChairs(FlowDataset):
-    def __init__(self, aug_params=None, split='training', root='datasets/FlyingChairs_release/data'):
-        super(FlyingChairs, self).__init__(aug_params)
-
-        images = sorted(glob(osp.join(root, '*.ppm')))
-        flows = sorted(glob(osp.join(root, '*.flo')))
-        assert (len(images)//2 == len(flows))
-
-        split_list = np.loadtxt('chairs_split.txt', dtype=np.int32)
-        for i in range(len(flows)):
-            xid = split_list[i]
-            if (split=='training' and xid==1) or (split=='validation' and xid==2):
-                self.flow_list += [ flows[i] ]
-                self.image_list += [ [images[2*i], images[2*i+1]] ]
-
-
-class FlyingThings3D(FlowDataset):
-    def __init__(self, aug_params=None, root='datasets/FlyingThings3D', dstype='frames_cleanpass'):
-        super(FlyingThings3D, self).__init__(aug_params)
-
-        for cam in ['left']:
-            for direction in ['into_future', 'into_past']:
-                image_dirs = sorted(glob(osp.join(root, dstype, 'TRAIN/*/*')))
-                image_dirs = sorted([osp.join(f, cam) for f in image_dirs])
-
-                flow_dirs = sorted(glob(osp.join(root, 'optical_flow/TRAIN/*/*')))
-                flow_dirs = sorted([osp.join(f, direction, cam) for f in flow_dirs])
-
-                for idir, fdir in zip(image_dirs, flow_dirs):
-                    images = sorted(glob(osp.join(idir, '*.png')) )
-                    flows = sorted(glob(osp.join(fdir, '*.pfm')) )
-                    for i in range(len(flows)-1):
-                        if direction == 'into_future':
-                            self.image_list += [ [images[i], images[i+1]] ]
-                            self.flow_list += [ flows[i] ]
-                        elif direction == 'into_past':
-                            self.image_list += [ [images[i+1], images[i]] ]
-                            self.flow_list += [ flows[i+1] ]
       
 
 class KITTI(FlowDataset):
     def __init__(self, aug_params=None, split='training', root='/content/datasets/KITTI'):
-        super(KITTI, self).__init__(aug_params, sparse=True)
+        super(KITTI, self).__init__(aug_params, sparse=False)
         # if split == 'testing':
         #     self.is_test = True
 
