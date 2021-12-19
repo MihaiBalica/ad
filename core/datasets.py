@@ -167,7 +167,7 @@ class KITTI(FlowDataset):
         images1 = sorted(glob(osp.join(root, 'image_2/*.png')))
         images2 = sorted(glob(osp.join(root, 'image_2/*.png')))
 
-        type(images1)
+        print(type(images1))
 
         for img1, img2 in zip(images1, images2):
             frame_id = img1.split('/')[-1]
