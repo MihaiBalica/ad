@@ -164,8 +164,8 @@ class KITTI(FlowDataset):
             self.is_test = True
 
         root = osp.join(root, split)
-        images1 = sorted(glob(osp.join(root, 'image_02/*.png')))
-        images2 = sorted(glob(osp.join(root, 'image_02/*.png')))
+        images1 = sorted(glob(osp.join(root, 'image_02/data/*.png')))
+        images2 = sorted(glob(osp.join(root, 'image_02/data/*.png')))
 
         print(len(images1))
         images2.remove(0)
