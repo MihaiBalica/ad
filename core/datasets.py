@@ -52,11 +52,11 @@ class FlowDataset(data.Dataset):
 
         index = index % len(self.image_list)
         valid = None
-        if self.sparse:
-            # flow, valid = frame_utils.readFlowKITTI(self.flow_list[index])
-            print("ouch")
-        else:
-            flow = frame_utils.read_gen(self.flow_list[index])
+        # if self.sparse:
+        #     # flow, valid = frame_utils.readFlowKITTI(self.flow_list[index])
+        #     print("ouch")
+        # else:
+        #     flow = frame_utils.read_gen(self.flow_list[index])
 
         img1 = frame_utils.read_gen(self.image_list[index][0])
         img2 = frame_utils.read_gen(self.image_list[index][1])
