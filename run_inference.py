@@ -61,12 +61,12 @@ def create_kitti_submission(model, output_path='kitti_submission'):
         # image1, image2, (frame_id, ) = test_dataset[test_id]
         image1, image2 = test_dataset[test_id]
         padder = InputPadder(image1.shape, mode='kitti')
-        image1, image2 = padder.pad(image1[None].to(f'cuda:{model.device_ids[0]}'), image2[None].to(f'cuda:{model.device_ids[0]}'))
+        image1, image2 = padder.pad(image1[None].to(f'cuda:{model().device_ids[0]}'), image2[None].to(f'cuda:{model().device_ids[0]}'))
 
         flow_pr = model.module(image1, image2)
         flow = padder.unpad(flow_pr[0]).permute(1, 2, 0).cpu().numpy()
 
-        output_filename = os.path.join(output_path, frame_id)
+        output_filename = os.path.join(output_path, test_id)
         frame_utils.writeFlowKITTI(output_filename, flow)
 
 
