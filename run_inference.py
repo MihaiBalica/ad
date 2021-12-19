@@ -49,7 +49,8 @@ def validate_kitti(model, iters=6):
 
     out_list, epe_list = [], []
     for val_id in range(len(val_dataset)):
-        image1, image2, flow_gt, valid_gt = val_dataset[val_id]
+        # image1, image2, flow_gt, valid_gt = val_dataset[val_id]
+        image1, image2 = val_dataset[val_id]
         image1 = image1[None].cuda()
         image2 = image2[None].cuda()
 
@@ -61,25 +62,25 @@ def validate_kitti(model, iters=6):
         output_filename = os.path.join(output_path, val_id)
         frame_utils.writeFlowKITTI(output_filename, flow)
 
-        epe = torch.sum((flow - flow_gt)**2, dim=0).sqrt()
-        mag = torch.sum(flow_gt**2, dim=0).sqrt()
+        # epe = torch.sum((flow - flow_gt)**2, dim=0).sqrt()
+        # mag = torch.sum(flow_gt**2, dim=0).sqrt()
 
-        epe = epe.view(-1)
-        mag = mag.view(-1)
-        val = valid_gt.view(-1) >= 0.5
+        # epe = epe.view(-1)
+        # mag = mag.view(-1)
+        # val = valid_gt.view(-1) >= 0.5
 
-        out = ((epe > 3.0) & ((epe/mag) > 0.05)).float()
-        epe_list.append(epe[val].mean().item())
-        out_list.append(out[val].cpu().numpy())
+        # out = ((epe > 3.0) & ((epe/mag) > 0.05)).float()
+        # epe_list.append(epe[val].mean().item())
+        # out_list.append(out[val].cpu().numpy())
 
-    epe_list = np.array(epe_list)
-    out_list = np.concatenate(out_list)
+    # epe_list = np.array(epe_list)
+    # out_list = np.concatenate(out_list)
 
-    epe = np.mean(epe_list)
-    f1 = 100 * np.mean(out_list)
+    # epe = np.mean(epe_list)
+    # f1 = 100 * np.mean(out_list)
 
-    print("Validation KITTI: %f, %f" % (epe, f1))
-    return {'kitti_epe': epe, 'kitti_f1': f1}
+    # print("Validation KITTI: %f, %f" % (epe, f1))
+    # return {'kitti_epe': epe, 'kitti_f1': f1}
 
 
 if __name__ == '__main__':
