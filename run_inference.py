@@ -62,7 +62,8 @@ def validate_kitti(model, iters=6):
         flow = padder.unpad(flow_pr[0]).permute(1, 2, 0).cpu().numpy()
         output_filename = os.path.join(output_path, str(val_id)) + ".flo"
         print(output_filename)
-        frame_utils.writeFlowKITTI(output_filename, flow)
+        # frame_utils.writeFlowKITTI(output_filename, flow)
+        frame_utils.writeFlow(output_filename, flow)
 
         # epe = torch.sum((flow - flow_gt)**2, dim=0).sqrt()
         # mag = torch.sum(flow_gt**2, dim=0).sqrt()
