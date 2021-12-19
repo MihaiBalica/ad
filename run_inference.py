@@ -126,7 +126,7 @@ if __name__ == '__main__':
     model.load_state_dict(torch.load(args.model))
 
     model.cuda()
-    model.eval()
+    # model.eval()
 
     # create_sintel_submission(model.module, warm_start=True)
     create_kitti_submission(model.module)
