@@ -43,7 +43,7 @@ def create_kitti_submission(model, output_path='kitti_submission'):
 @torch.no_grad()
 def validate_kitti(model, iters=6):
     """ Peform validation using the KITTI-2015 (train) split """
-    output_path='kitti_submission'
+    output_path='/content/datasets/KITTI/image_02/flow'
     model.eval()
     val_dataset = datasets.KITTI(split='training')
 
@@ -59,7 +59,7 @@ def validate_kitti(model, iters=6):
 
         flow_pr = model(image1, image2, iters=iters, test_mode=True)
         flow = padder.unpad(flow_pr[0]).cpu()
-        output_filename = os.path.join(output_path, val_id)
+        output_filename = os.path.join(output_path, str(val_id))
         frame_utils.writeFlowKITTI(output_filename, flow)
 
         # epe = torch.sum((flow - flow_gt)**2, dim=0).sqrt()
