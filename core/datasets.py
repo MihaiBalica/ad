@@ -73,22 +73,23 @@ class FlowDataset(data.Dataset):
             img1 = img1[..., :3]
             img2 = img2[..., :3]
 
-        if self.augmentor is not None:
-            if self.sparse:
-                img1, img2, flow, valid = self.augmentor(img1, img2, flow, valid)
-            else:
-                img1, img2, flow = self.augmentor(img1, img2, flow)
+        # if self.augmentor is not None:
+        #     if self.sparse:
+        #         img1, img2, flow, valid = self.augmentor(img1, img2, flow, valid)
+        #     else:
+        #         img1, img2, flow = self.augmentor(img1, img2, flow)
 
         img1 = torch.from_numpy(img1).permute(2, 0, 1).float()
         img2 = torch.from_numpy(img2).permute(2, 0, 1).float()
-        flow = torch.from_numpy(flow).permute(2, 0, 1).float()
+        # flow = torch.from_numpy(flow).permute(2, 0, 1).float()
 
-        if valid is not None:
-            valid = torch.from_numpy(valid)
-        else:
-            valid = (flow[0].abs() < 1000) & (flow[1].abs() < 1000)
+        # if valid is not None:
+        #     valid = torch.from_numpy(valid)
+        # else:
+        #     valid = (flow[0].abs() < 1000) & (flow[1].abs() < 1000)
 
-        return img1, img2, flow, valid.float()#, self.extra_info[index]
+        # return img1, img2, flow, valid.float()#, self.extra_info[index]
+        return img1, img2
 
     def __rmul__(self, v):
         self.flow_list = v * self.flow_list
