@@ -60,7 +60,7 @@ def validate_kitti(model, iters=6):
         flow_pr = model(image1, image2, iters=iters, test_mode=True)
         # flow = padder.unpad(flow_pr[0]).cpu()
         flow = padder.unpad(flow_pr[0]).permute(1, 2, 0).cpu().numpy()
-        output_filename = os.path.join(output_path, str(val_id)) + ".flo"
+        output_filename = os.path.join(output_path, str(val_id).zfill(10)) + ".flo"
         print(output_filename)
         # frame_utils.writeFlowKITTI(output_filename, flow)
         frame_utils.writeFlow(output_filename, flow)
