@@ -107,6 +107,7 @@ class KITTI(FlowDataset):
         #     self.is_test = True
 
         # root = osp.join(root, split)
+        print("root is ===> " + root)
         images1 = sorted(glob(osp.join(root, 'image_02/data/*.png')))
         images2 = sorted(glob(osp.join(root, 'image_02/data/*.png')))
 

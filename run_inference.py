@@ -41,11 +41,11 @@ def create_kitti_submission(model, output_path='kitti_submission'):
 
 
 @torch.no_grad()
-def validate_kitti(model, iters=6):
+def validate_kitti(model, iters=6, root='/content/datasets/KITTI'):
     """ Peform validation using the KITTI-2015 (train) split """
-    output_path='/content/datasets/KITTI/image_02/flow'
+    output_path = root + '/image_02/flow'
     model.eval()
-    val_dataset = datasets.KITTI(split='training')
+    val_dataset = datasets.KITTI(split='training', root=root)
 
     out_list, epe_list = [], []
     for val_id in range(len(val_dataset)):
@@ -93,6 +93,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_k', type=int, default=8,
                         help='number of hypotheses to compute for knn Faiss')
     parser.add_argument('--mixed_precision', default=True, help='use mixed precision')
+    parser.add_argument('--input_dir', default='/content/datasets/KITTI', help='where are the input pngs')
 
     args = parser.parse_args()
 
@@ -113,4 +114,4 @@ if __name__ == '__main__':
             validate_sintel(model.module, iters=32)
 
         elif args.dataset == 'kitti':
-            validate_kitti(model.module, iters=24)
+            validate_kitti(model.module, iters=24, args.input_dir)
