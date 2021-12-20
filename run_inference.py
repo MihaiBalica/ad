@@ -114,4 +114,4 @@ if __name__ == '__main__':
             validate_sintel(model.module, iters=32)
 
         elif args.dataset == 'kitti':
-            validate_kitti(model.module, iters=24, args.input_dir)
+            validate_kitti(model.module, iters=24, root=args.input_dir)
